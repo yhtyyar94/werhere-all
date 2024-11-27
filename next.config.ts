@@ -1,4 +1,5 @@
 import type { NextConfig } from "next";
+import webpack from "webpack";
 
 const isProduction = process.env.NODE_ENV === "production";
 
@@ -13,7 +14,7 @@ const nextConfig: NextConfig = {
     // your project has ESLint errors.
     ignoreDuringBuilds: isProduction,
   },
-  webpack: (config, { isServer, buildId, dev, webpack }) => {
+  webpack: (config, { isServer }) => {
     if (!isServer) {
       config.resolve.fallback = {
         ...config.resolve.fallback,
@@ -25,12 +26,9 @@ const nextConfig: NextConfig = {
         new webpack.ProvidePlugin({
           process: "process/browser",
         }),
-        new webpack.NormalModuleReplacementPlugin(
-          /node:crypto/,
-          (resource: any) => {
-            resource.request = resource.request.replace(/^node:/, "");
-          }
-        )
+        new webpack.NormalModuleReplacementPlugin(/^node:/, (resource: any) => {
+          resource.request = resource.request.replace(/^node:/, "");
+        })
       );
     }
     return config;

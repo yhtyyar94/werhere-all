@@ -1,4 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
+// ./middleware.ts
+
+import * as crypto from "node:crypto";
 
 import { getIronSession } from "iron-session";
 

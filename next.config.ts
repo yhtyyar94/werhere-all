@@ -22,12 +22,15 @@ const nextConfig: NextConfig = {
         crypto: require.resolve("crypto-browserify"),
       };
 
+      config.resolve.alias = {
+        ...config.resolve.alias,
+        "node:crypto": "crypto-browserify",
+        "node:stream": "stream-browserify",
+      };
+
       config.plugins.push(
         new webpack.ProvidePlugin({
           process: "process/browser",
-        }),
-        new webpack.NormalModuleReplacementPlugin(/^node:/, (resource: any) => {
-          resource.request = resource.request.replace(/^node:/, "");
         })
       );
     }

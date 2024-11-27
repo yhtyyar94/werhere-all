@@ -9,41 +9,64 @@ import {
 } from "@/components/ui/action-bar";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 const ListAllRecords = () => {
+  const [items, setItems] = useState([]);
   const [selection, setSelection] = useState<string[]>([]);
+
+  useEffect(() => {
+    fetch("/api/get-all-records", {
+      method: "GET",
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        console.log(data);
+        setItems(data);
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+      });
+  }, []);
 
   const hasSelection = selection.length > 0;
   const indeterminate = hasSelection && selection.length < items.length;
 
-  const rows = items.map((item) => (
-    <Table.Row
-      key={item.name}
-      data-selected={selection.includes(item.name) ? "" : undefined}
-      cursor={"pointer"}
-      _hover={{ fontWeight: "bold" }}
-    >
-      <Table.Cell>
-        <Checkbox
-          top="1"
-          aria-label="Select row"
-          checked={selection.includes(item.name)}
-          onCheckedChange={(changes) => {
-            setSelection((prev) =>
-              changes.checked
-                ? [...prev, item.name]
-                : selection.filter((name) => name !== item.name)
-            );
-          }}
+  const rows =
+    items.length !== 0 ? (
+      items.map((item) => (
+        <Table.Row
+          key={item.voornaam}
+          data-selected={selection.includes(item.voornaam) ? "" : undefined}
           cursor={"pointer"}
-        />
-      </Table.Cell>
-      <Table.Cell>{item.name}</Table.Cell>
-      <Table.Cell>{item.category}</Table.Cell>
-      <Table.Cell>${item.price}</Table.Cell>
-    </Table.Row>
-  ));
+          _hover={{ fontWeight: "bold" }}
+        >
+          <Table.Cell>
+            <Checkbox
+              top="1"
+              aria-label="Select row"
+              checked={selection.includes(item.voornaam)}
+              onCheckedChange={(changes) => {
+                setSelection((prev) =>
+                  changes.checked
+                    ? [...prev, item.voornaam]
+                    : selection.filter((voornaam) => voornaam !== item.voornaam)
+                );
+              }}
+              cursor={"pointer"}
+            />
+          </Table.Cell>
+          <Table.Cell>{item.voornaam}</Table.Cell>
+          <Table.Cell>{item.achternaam}</Table.Cell>
+          <Table.Cell>{item.email}</Table.Cell>
+          <Table.Cell>{item.provincie}</Table.Cell>
+        </Table.Row>
+      ))
+    ) : (
+      <Table.Row>
+        <Table.Cell colSpan={4}>No records found</Table.Cell>
+      </Table.Row>
+    );
 
   return (
     <Stack
@@ -67,9 +90,10 @@ const ListAllRecords = () => {
                 cursor={"pointer"}
               />
             </Table.ColumnHeader>
-            <Table.ColumnHeader>Product</Table.ColumnHeader>
-            <Table.ColumnHeader>Category</Table.ColumnHeader>
-            <Table.ColumnHeader>Price</Table.ColumnHeader>
+            <Table.ColumnHeader>Voornaam</Table.ColumnHeader>
+            <Table.ColumnHeader>Achternaam</Table.ColumnHeader>
+            <Table.ColumnHeader>Email</Table.ColumnHeader>
+            <Table.ColumnHeader>Provincie</Table.ColumnHeader>
           </Table.Row>
         </Table.Header>
         <Table.Body>{rows}</Table.Body>
@@ -90,7 +114,7 @@ const ListAllRecords = () => {
   );
 };
 
-const items = [
+const item = [
   { id: 1, name: "Laptop", category: "Electronics", price: 999.99 },
   { id: 2, name: "Coffee Maker", category: "Home Appliances", price: 49.99 },
   { id: 3, name: "Desk Chair", category: "Furniture", price: 150.0 },

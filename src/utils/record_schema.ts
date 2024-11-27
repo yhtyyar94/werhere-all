@@ -20,6 +20,10 @@ const recordSchema = new mongoose.Schema({
   naturalisatieStatus: String,
   voorkantIdentiteitsbewijs: String,
   achterkantIdentiteitsbewijs: String,
+  opleidingWiltVolgen: String,
+  provincie: String,
+  beschikbareDagen: String,
+  beschikbareTijden: String,
   createdAt: { type: Date, default: Date.now },
 });
 

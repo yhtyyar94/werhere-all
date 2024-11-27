@@ -2,6 +2,7 @@ import {
   HStack,
   Input,
   Stack,
+  Text,
   VStack,
   createListCollection,
 } from "@chakra-ui/react";
@@ -22,6 +23,8 @@ import {
   FileUploadTrigger,
 } from "@/components/ui/file-upload";
 import { HiUpload } from "react-icons/hi";
+import { Checkbox } from "@/components/ui/checkbox";
+import { toaster, Toaster } from "@/components/ui/toaster";
 
 const PersonalInfo = () => {
   const [state, setState] = React.useState({
@@ -42,10 +45,16 @@ const PersonalInfo = () => {
     naturalisatieStatus: "",
     voorkantIdentiteitsbewijs: "",
     achterkantIdentiteitsbewijs: "",
-    geboortedatum: "",
+    opleidingWiltVolgen: "",
+    provincie: "",
+    beschikbareDagen: "",
+    beschikbareTijden: "",
   });
   const [voorkant, setVoorkant] = React.useState<File | null>(null);
   const [achterkant, setAchterkant] = React.useState<File | null>(null);
+  const [andereOpleiding, setAndereOpleiding] = React.useState(false);
+  const [loading, setLoading] = React.useState(false);
+
   const languageLevel = createListCollection({
     items: [
       { label: "A1", value: "A1" },
@@ -66,6 +75,58 @@ const PersonalInfo = () => {
     items: [
       { label: "Ja", value: "JA" },
       { label: "Nee", value: "NEE" },
+    ],
+  });
+
+  const dagen = createListCollection({
+    items: [
+      { label: "Maandag", value: "Maandag" },
+      { label: "Dinsdag", value: "Dinsdag" },
+      { label: "Woensdag", value: "Woensdag" },
+      { label: "Donderdag", value: "Donderdag" },
+      { label: "Vrijdag", value: "Vrijdag" },
+      { label: "Zaterdag", value: "Zaterdag" },
+      { label: "Zondag", value: "Zondag" },
+    ],
+  });
+
+  const tijden = createListCollection({
+    items: [
+      { label: "Ochtend", value: "Ochtend" },
+      { label: "Middag", value: "Middag" },
+      { label: "Avond", value: "Avond" },
+    ],
+  });
+
+  const opleidingen = createListCollection({
+    items: [
+      {
+        label: "Nederlands taalcursus Intensief (B1-B2)",
+        value: "Nederlands taalcursus Intensief (B1-B2)",
+      },
+      {
+        label: "Spreekvaardigheid Nederlands (B1-B2)",
+        value: "Spreekvaardigheid Nederlands (B1-B2)",
+      },
+      { label: "Vaktaal IT", value: "Vaktaal IT" },
+      {
+        label: "Vaktaal/Vakdidactiek Onderwijs",
+        value: "Vaktaal/Vakdidactiek Onderwijs",
+      },
+      {
+        label: "Vaktaal Financieel Administratief",
+        value: "Vaktaal Financieel Administratief",
+      },
+      { label: "VIT (Voorbereiding IT)", value: "VIT (Voorbereiding IT)" },
+      {
+        label: "Leer-werkprogramma Data Engineer",
+        value: "Leer-werkprogramma Data Engineer",
+      },
+      {
+        label: "Leer-werkprogramma Data Analyst",
+        value: "Leer-werkprogramma Data Analyst",
+      },
+      { label: "Anders", value: "Anders" },
     ],
   });
 
@@ -92,22 +153,74 @@ const PersonalInfo = () => {
     formData.append("naturalisatieStatus", state.naturalisatieStatus);
     formData.append("voorkantIdentiteitsbewijs", voorkant as Blob);
     formData.append("achterkantIdentiteitsbewijs", achterkant as Blob);
+    formData.append("opleidingWiltVolgen", state.opleidingWiltVolgen);
+    formData.append("provincie", state.provincie);
+    formData.append("beschikbareDagen", state.beschikbareDagen);
+    formData.append("beschikbareTijden", state.beschikbareTijden);
+    setLoading(true);
     const response = await fetch("/api/create-record", {
       method: "POST",
       body: formData,
     });
     const data = await response.json();
-    console.log(data);
+
+    if (data.status === "success") {
+      toaster.create({
+        title: "Succes",
+        description: "Uw gegevens zijn succesvol verzonden",
+        type: "success",
+      });
+      setState({
+        voornaam: "",
+        achternaam: "",
+        email: "",
+        telefoonnummer: "",
+        adres: "",
+        postcode: "",
+        woonplaats: "",
+        bsn: "",
+        geboorteplaats: "",
+        verblijfsvergunningNummer: "",
+        begindatum: "",
+        einddatum: "",
+        taalniveau: "",
+        uitkeringsstatus: "",
+        naturalisatieStatus: "",
+        voorkantIdentiteitsbewijs: "",
+        achterkantIdentiteitsbewijs: "",
+        opleidingWiltVolgen: "",
+        provincie: "",
+        beschikbareDagen: "",
+        beschikbareTijden: "",
+      });
+      setLoading(false);
+    } else {
+      toaster.create({
+        title: "Error",
+        description: "Failed to upload files",
+        type: "error",
+      });
+      setLoading(false);
+    }
   };
 
   return (
-    <Stack w={"100%"}>
+    <Stack w={"100%"} h={"100vh"}>
       <form onSubmit={(e) => handleSubmit(e)}>
         <VStack
-          w={{ base: "100%", md: "50%" }}
+          w={{ base: "100%", md: "80%", lg: "50%" }}
           mx={{ base: "0", md: "auto" }}
-          p={{ base: "4", md: "0" }}
+          p={{ base: "4" }}
+          shadow={"md"}
+          mt={{ base: "4", md: "8" }}
+          h={"100%"}
+          alignItems={"center"}
         >
+          <HStack>
+            <Text fontSize={"x-large"} fontWeight={"bold"} w={"100%"}>
+              ESF+ Subsidie Formulier
+            </Text>
+          </HStack>
           <HStack w={"100%"} flexDirection={{ base: "column", md: "row" }}>
             <Field label={"Voornaam"}>
               <Input
@@ -154,7 +267,7 @@ const PersonalInfo = () => {
               />
             </Field>
           </HStack>
-          <VStack w={"100%"}>
+          <HStack w={"100%"} flexDirection={{ base: "column", md: "row" }}>
             <Field label={"Adres"}>
               <Input
                 // required={true}
@@ -164,8 +277,6 @@ const PersonalInfo = () => {
                 name="address"
               />
             </Field>
-          </VStack>
-          <HStack w={"100%"} flexDirection={{ base: "column", md: "row" }}>
             <Field label={"Postcode"}>
               <Input
                 // required={true}
@@ -177,6 +288,8 @@ const PersonalInfo = () => {
                 name="postcode"
               />
             </Field>
+          </HStack>
+          <HStack w={"100%"} flexDirection={{ base: "column", md: "row" }}>
             <Field label={"Woonplaats"}>
               <Input
                 // required={true}
@@ -186,6 +299,17 @@ const PersonalInfo = () => {
                   setState({ ...state, woonplaats: e.target.value })
                 }
                 name="city"
+              />
+            </Field>
+            <Field label={"Provincie"}>
+              <Input
+                // required={true}
+                placeholder="In welke provincie woont u?"
+                value={state.provincie}
+                onChange={(e) =>
+                  setState({ ...state, provincie: e.target.value })
+                }
+                name="provincie"
               />
             </Field>
           </HStack>
@@ -203,19 +327,19 @@ const PersonalInfo = () => {
               <Input
                 // required={true}
                 placeholder="Vul je geboorteplaats in"
-                value={state.geboortedatum}
+                value={state.geboorteplaats}
                 onChange={(e) =>
-                  setState({ ...state, geboortedatum: e.target.value })
+                  setState({ ...state, geboorteplaats: e.target.value })
                 }
                 name="birthplace"
               />
             </Field>
           </HStack>
           <HStack w={"100%"} flexDirection={{ base: "column", md: "row" }}>
-            <Field label={"Verblijfsvergunning nummer"}>
+            <Field label={"Verblijfsvergunningnummer of ID-nummer"}>
               <Input
                 // required={true}
-                placeholder="Vul je Verblijfsvergunning nummer in"
+                placeholder="Vul je Verblijfsvergunningnummer of ID-nummer in"
                 value={state.verblijfsvergunningNummer}
                 onChange={(e) =>
                   setState({
@@ -311,6 +435,104 @@ const PersonalInfo = () => {
               </SelectContent>
             </SelectRoot>
           </HStack>
+          <HStack w={"100%"} flexDirection={{ base: "column" }}>
+            <SelectRoot
+              collection={opleidingen}
+              size="sm"
+              onValueChange={(e) => {
+                if (e.value[0] === "Anders") {
+                  setState({ ...state, opleidingWiltVolgen: "" });
+                  setAndereOpleiding(true);
+                } else {
+                  setAndereOpleiding(false);
+                  setState({ ...state, opleidingWiltVolgen: e.value[0] });
+                }
+              }}
+              //   required={true}
+            >
+              <SelectLabel>Welke opleiding wilt u volgen?</SelectLabel>
+              <SelectTrigger>
+                <SelectValueText placeholder="Kies uit onderstaande opties door een vinkje te plaatsen:" />
+              </SelectTrigger>
+              <SelectContent>
+                {opleidingen.items.map((movie) => (
+                  <SelectItem item={movie} key={movie.value}>
+                    {movie.label}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </SelectRoot>
+            {andereOpleiding && (
+              <Field>
+                <Input
+                  // required={true}
+                  type="text"
+                  value={state.opleidingWiltVolgen}
+                  onChange={(e) =>
+                    setState({ ...state, opleidingWiltVolgen: e.target.value })
+                  }
+                  name="opleidingWiltVolgen"
+                  placeholder="Vul de opleiding in die u wilt volgen"
+                />
+              </Field>
+            )}
+          </HStack>
+          <HStack w={"100%"} flexDirection={{ base: "column" }}>
+            <Text
+              fontWeight={"450"}
+              fontSize={"15px"}
+              w={"100%"}
+              textAlign={"left"}
+            >
+              ⁠Beschikbare dagen en tijden. ⁠Op welke dagen en tijden bent u
+              beschikbaar voor de opleiding?
+            </Text>
+            <HStack w={"100%"} flexDirection={{ base: "column", md: "row" }}>
+              <SelectRoot
+                collection={dagen}
+                multiple
+                size="sm"
+                onValueChange={(e) =>
+                  setState({ ...state, beschikbareDagen: e.value.join(", ") })
+                }
+                //   required={true}
+              >
+                <SelectLabel>Dagen</SelectLabel>
+                <SelectTrigger>
+                  <SelectValueText placeholder="Kies de dag waarop u beschikbaar bent" />
+                </SelectTrigger>
+                <SelectContent>
+                  {dagen.items.map((movie) => (
+                    <SelectItem item={movie} key={movie.value}>
+                      {movie.label}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </SelectRoot>
+              <SelectRoot
+                collection={tijden}
+                multiple
+                size="sm"
+                onValueChange={(e) =>
+                  setState({ ...state, beschikbareTijden: e.value.join(", ") })
+                }
+                //   required={true}
+              >
+                <SelectLabel>Tijden</SelectLabel>
+                <SelectTrigger>
+                  <SelectValueText placeholder="Kies het tijdstip waarop u beschikbaar bent" />
+                </SelectTrigger>
+                <SelectContent>
+                  {tijden.items.map((movie) => (
+                    <SelectItem item={movie} key={movie.value}>
+                      {movie.label}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </SelectRoot>
+            </HStack>
+          </HStack>
+
           <HStack w={"100%"} flexDirection={{ base: "column", md: "row" }}>
             <Field label={"Voorkant van uw identiteitsbewijs"}>
               <FileUploadRoot
@@ -341,14 +563,40 @@ const PersonalInfo = () => {
               </FileUploadRoot>
             </Field>
           </HStack>
+          <HStack my={2}>
+            <Checkbox
+              name="terms"
+              // required={true}
+            >
+              Door op ‘Indienen’ te klikken, geef ik toestemming voor het
+              verwerken van mijn gegevens zoals beschreven. De gegevens die in
+              dit formulier worden opgenomen, worden uitsluitend gebruikt voor
+              de verantwoording van de ESF+ subsidie en zullen op geen enkele
+              manier verder worden verspreid buiten de aangesloten partijen die
+              direct betrokken zijn bij deze subsidieaanvraag. De gegevens
+              worden uitsluitend bewaard zolang dit noodzakelijk is voor de
+              verantwoording van de ESF+ subsidie en worden daarna vernietigd
+              conform de AVG-richtlijnen. Door dit formulier in te dienen,
+              verklaar ik de bovenstaande informatie te hebben gelezen en ga ik
+              akkoord met het verwerken van mijn gegevens onder de genoemde
+              voorwaarden.
+            </Checkbox>
+          </HStack>
           <HStack
             w={"100%"}
             flexDirection={{ base: "column", md: "row" }}
             justifyContent={"center"}
+            my={5}
           >
-            <Button type="submit" w={{ base: "100%" }}>
+            <Button
+              type="submit"
+              w={{ base: "100%" }}
+              colorPalette={"red"}
+              disabled={loading}
+            >
               Indienen
             </Button>
+            <Toaster />
           </HStack>
         </VStack>
       </form>

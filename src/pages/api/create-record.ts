@@ -77,6 +77,16 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         : null,
       voorkantIdentiteitsbewijs: voorkantIdentiteitsbewijs?.secure_url,
       achterkantIdentiteitsbewijs: achterkantIdentiteitsbewijs?.secure_url,
+      opleidingWiltVolgen: fields.opleidingWiltVolgen
+        ? fields.opleidingWiltVolgen[0]
+        : null,
+      provincie: fields.provincie ? fields.provincie[0] : null,
+      beschikbareDagen: fields.beschikbareDagen
+        ? fields.beschikbareDagen[0]
+        : null,
+      beschikbareTijden: fields.beschikbareTijden
+        ? fields.beschikbareTijden[0]
+        : null,
     });
     await record.save();
     await mongoose.disconnect();

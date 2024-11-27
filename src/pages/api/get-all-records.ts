@@ -7,7 +7,6 @@ export const config = {
   api: {
     bodyParser: false, // Disable Next.js body parsing
   },
-  runtime: "edge",
 };
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {

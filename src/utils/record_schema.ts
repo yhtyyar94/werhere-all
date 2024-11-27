@@ -13,8 +13,6 @@ const recordSchema = new mongoose.Schema({
   bsn: String,
   geboorteplaats: String,
   verblijfsvergunningNummer: String,
-  begindatum: String,
-  einddatum: String,
   taalniveau: String,
   uitkeringsstatus: String,
   naturalisatieStatus: String,
@@ -24,6 +22,7 @@ const recordSchema = new mongoose.Schema({
   provincie: String,
   beschikbareDagen: String,
   beschikbareTijden: String,
+  geboortedatum: String,
   createdAt: { type: Date, default: Date.now },
 });
 

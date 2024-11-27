@@ -66,8 +66,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       verblijfsvergunningNummer: fields.verblijfsvergunningNummer
         ? fields.verblijfsvergunningNummer[0]
         : null,
-      begindatum: fields.begindatum ? fields.begindatum[0] : null,
-      einddatum: fields.einddatum ? fields.einddatum[0] : null,
       taalniveau: fields.taalniveau ? fields.taalniveau[0] : null,
       uitkeringsstatus: fields.uitkeringsstatus
         ? fields.uitkeringsstatus[0]
@@ -87,6 +85,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       beschikbareTijden: fields.beschikbareTijden
         ? fields.beschikbareTijden[0]
         : null,
+      geboortedatum: fields.geboortedatum ? fields.geboortedatum[0] : null,
     });
     await record.save();
     await mongoose.disconnect();

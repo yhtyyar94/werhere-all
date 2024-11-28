@@ -581,7 +581,7 @@ const PersonalInfo = () => {
             </HStack>
           </HStack>
 
-          <HStack w={"100%"} flexDirection={{ base: "column", md: "row" }}>
+          {/* <HStack w={"100%"} flexDirection={{ base: "column", md: "row" }}>
             <Field label={"Voorkant van uw identiteitsbewijs"}>
               <FileUploadRoot
                 maxFiles={1}
@@ -610,7 +610,7 @@ const PersonalInfo = () => {
                 <FileUploadList />
               </FileUploadRoot>
             </Field>
-          </HStack>
+          </HStack> */}
           <HStack my={2}>
             <Checkbox name="terms" required={true}>
               Door op ‘Indienen’ te klikken, geef ik toestemming voor het

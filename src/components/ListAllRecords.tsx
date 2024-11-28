@@ -10,9 +10,17 @@ import {
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { useEffect, useState } from "react";
+import Link from "next/link";
 
 const ListAllRecords = () => {
-  const [items, setItems] = useState([]);
+  interface RecordItem {
+    voornaam: string;
+    achternaam: string;
+    email: string;
+    provincie: string;
+  }
+
+  const [items, setItems] = useState<RecordItem[]>([]);
   const [selection, setSelection] = useState<string[]>([]);
 
   useEffect(() => {
@@ -56,10 +64,22 @@ const ListAllRecords = () => {
               cursor={"pointer"}
             />
           </Table.Cell>
-          <Table.Cell>{item.voornaam}</Table.Cell>
-          <Table.Cell>{item.achternaam}</Table.Cell>
-          <Table.Cell>{item.email}</Table.Cell>
-          <Table.Cell>{item.provincie}</Table.Cell>
+          <Table.Cell>
+            {" "}
+            <Link href={`/admin/${item.email}`}>{item.voornaam}</Link>
+          </Table.Cell>
+          <Table.Cell>
+            {" "}
+            <Link href={`/admin/${item.email}`}>{item.achternaam}</Link>
+          </Table.Cell>
+          <Table.Cell>
+            {" "}
+            <Link href={`/admin/${item.email}`}>{item.email}</Link>
+          </Table.Cell>
+          <Table.Cell>
+            {" "}
+            <Link href={`/admin/${item.email}`}>{item.provincie}</Link>
+          </Table.Cell>
         </Table.Row>
       ))
     ) : (
@@ -84,7 +104,7 @@ const ListAllRecords = () => {
                 checked={indeterminate ? "indeterminate" : selection.length > 0}
                 onCheckedChange={(changes) => {
                   setSelection(
-                    changes.checked ? items.map((item) => item.name) : []
+                    changes.checked ? items.map((item) => item.voornaam) : []
                   );
                 }}
                 cursor={"pointer"}

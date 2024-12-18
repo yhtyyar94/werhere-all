@@ -45,7 +45,7 @@ const PersonalInfo = () => {
     naturalisatieStatus: "",
     voorkantIdentiteitsbewijs: "",
     achterkantIdentiteitsbewijs: "",
-    opleidingWiltVolgen: "",
+
     provincie: "",
     beschikbareDagen: "",
     beschikbareTijden: "",
@@ -134,11 +134,6 @@ const PersonalInfo = () => {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    let value = state.opleidingWiltVolgen;
-    if (andereOpleidingValue != "") {
-      value = value + "," + andereOpleidingValue;
-    }
-
     const formData = new FormData();
     formData.append("voornaam", state.voornaam);
     formData.append("achternaam", state.achternaam);
@@ -158,7 +153,6 @@ const PersonalInfo = () => {
     formData.append("naturalisatieStatus", state.naturalisatieStatus);
     formData.append("voorkantIdentiteitsbewijs", voorkant as Blob);
     formData.append("achterkantIdentiteitsbewijs", achterkant as Blob);
-    formData.append("opleidingWiltVolgen", value);
     formData.append("provincie", state.provincie);
     formData.append("beschikbareDagen", state.beschikbareDagen);
     formData.append("beschikbareTijden", state.beschikbareTijden);
@@ -171,33 +165,35 @@ const PersonalInfo = () => {
     const data = await response.json();
 
     if (data.status === "success") {
-      toaster.create({
-        title: "Succes",
-        description: "Uw gegevens zijn succesvol verzonden",
-        type: "success",
-      });
-      // setState({
-      //   voornaam: "",
-      //   achternaam: "",
-      //   email: "",
-      //   telefoonnummer: "",
-      //   adres: "",
-      //   postcode: "",
-      //   woonplaats: "",
-      //   bsn: "",
-      //   geboorteplaats: "",
-      //   verblijfsvergunningNummer: "",
-      //   taalniveau: "",
-      //   uitkeringsstatus: "",
-      //   naturalisatieStatus: "",
-      //   voorkantIdentiteitsbewijs: "",
-      //   achterkantIdentiteitsbewijs: "",
-      //   opleidingWiltVolgen: "",
-      //   provincie: "",
-      //   beschikbareDagen: "",
-      //   beschikbareTijden: "",
-      //   geboortedatum: "",
+      // toaster.create({
+      //   title: "Succes",
+      //   description: "Uw gegevens zijn succesvol verzonden",
+      //   type: "success",
+      //   // placement: "bottom",
+      //   duration: 3000,
       // });
+      window.alert("Uw gegevens zijn succesvol verzonden");
+      setState({
+        voornaam: "",
+        achternaam: "",
+        email: "",
+        telefoonnummer: "",
+        adres: "",
+        postcode: "",
+        woonplaats: "",
+        bsn: "",
+        geboorteplaats: "",
+        verblijfsvergunningNummer: "",
+        taalniveau: "",
+        uitkeringsstatus: "",
+        naturalisatieStatus: "",
+        voorkantIdentiteitsbewijs: "",
+        achterkantIdentiteitsbewijs: "",
+        provincie: "",
+        beschikbareDagen: "",
+        beschikbareTijden: "",
+        geboortedatum: "",
+      });
       setAndereOpleiding(false);
       // setAndereOpleidingValue("");
       setLoading(false);
@@ -212,24 +208,6 @@ const PersonalInfo = () => {
   };
   console.log(state);
 
-  const handelCheckboxChange = (e: any) => {
-    if ((e.target as HTMLInputElement).checked) {
-      const value = state.opleidingWiltVolgen.split(",");
-      value.push((e.target as HTMLInputElement).value);
-      setState({
-        ...state,
-        opleidingWiltVolgen: value.join(","),
-      });
-    } else {
-      const value = state.opleidingWiltVolgen.split(",");
-      const index = value.indexOf((e.target as HTMLInputElement).value);
-      value.splice(index, 1);
-      setState({
-        ...state,
-        opleidingWiltVolgen: value.join(","),
-      });
-    }
-  };
   return (
     <Stack w={"100%"} h={"100vh"}>
       <form onSubmit={(e) => handleSubmit(e)}>
@@ -449,81 +427,6 @@ const PersonalInfo = () => {
                 ))}
               </SelectContent>
             </SelectRoot>
-          </HStack>
-          <HStack w={"100%"} flexDirection={{ base: "column" }}>
-            <Fieldset.Root>
-              <CheckboxGroup>
-                <Fieldset.Legend fontSize="sm" mb="2">
-                  Welke opleiding wilt u volgen?
-                </Fieldset.Legend>
-                <Fieldset.Content>
-                  <Checkbox
-                    onChange={handelCheckboxChange}
-                    value="Nederlands taalcursus Intensief (B1-B2)"
-                  >
-                    Nederlands taalcursus Intensief (B1-B2)
-                  </Checkbox>
-                  <Checkbox
-                    onChange={handelCheckboxChange}
-                    value="Spreekvaardigheid Nederlands (B1-B2)"
-                  >
-                    Spreekvaardigheid Nederlands (B1-B2)
-                  </Checkbox>
-                  <Checkbox onChange={handelCheckboxChange} value="Vaktaal IT">
-                    Vaktaal IT
-                  </Checkbox>
-                  <Checkbox
-                    onChange={handelCheckboxChange}
-                    value="Vaktaal/Vakdidactiek Onderwijs"
-                  >
-                    Vaktaal/Vakdidactiek Onderwijs
-                  </Checkbox>
-                  <Checkbox
-                    onChange={handelCheckboxChange}
-                    value="Vaktaal Financieel Administratief"
-                  >
-                    Vaktaal Financieel Administratief
-                  </Checkbox>
-                  <Checkbox
-                    onChange={handelCheckboxChange}
-                    value="VIT (Voorbereiding IT)"
-                  >
-                    VIT (Voorbereiding IT)
-                  </Checkbox>
-                  <Checkbox
-                    onChange={handelCheckboxChange}
-                    value="Leer-werkprogramma Data Engineer"
-                  >
-                    Leer-werkprogramma Data Engineer
-                  </Checkbox>
-                  <Checkbox
-                    onChange={handelCheckboxChange}
-                    value="Leer-werkprogramma Data Analyst"
-                  >
-                    Leer-werkprogramma Data Analyst
-                  </Checkbox>
-                  <Checkbox
-                    value="Anders"
-                    onChange={() => setAndereOpleiding(!andereOpleiding)}
-                  >
-                    Anders
-                  </Checkbox>
-                </Fieldset.Content>
-              </CheckboxGroup>
-            </Fieldset.Root>
-
-            {andereOpleiding && (
-              <Field>
-                <Input
-                  required={true}
-                  type="text"
-                  value={andereOpleidingValue}
-                  onChange={(e) => setAndereOpleidingValue(e.target.value)}
-                  name="opleidingWiltVolgen"
-                  placeholder="Vul de opleiding in die u wilt volgen"
-                />
-              </Field>
-            )}
           </HStack>
           <HStack w={"100%"} flexDirection={{ base: "column" }}>
             <Text

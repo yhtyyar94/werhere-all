@@ -26,7 +26,7 @@ const recordSchema = new mongoose.Schema({
   createdAt: { type: Date, default: Date.now },
 });
 
-const modelName = "records";
+const modelName = "records-without-courses";
 
 export default mongoose.models[modelName] ||
   mongoose.model(modelName, recordSchema, process.env.COLLECTION);

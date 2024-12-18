@@ -195,22 +195,7 @@ const ReadOnly = () => {
               />
             </Field>
           </HStack>
-          <HStack w={"100%"} flexDirection={{ base: "column" }}>
-            <Fieldset.Root>
-              <CheckboxGroup>
-                <Fieldset.Legend fontSize="sm" mb="2">
-                  Welke opleiding wilt u volgen?
-                </Fieldset.Legend>
-                <Fieldset.Content>
-                  {opleidingWiltVolgen.map((item, index) => (
-                    <Checkbox key={index} checked={true}>
-                      {item}
-                    </Checkbox>
-                  ))}
-                </Fieldset.Content>
-              </CheckboxGroup>
-            </Fieldset.Root>
-          </HStack>
+
           <HStack w={"100%"} flexDirection={{ base: "column" }}>
             <Text
               fontWeight={"450"}

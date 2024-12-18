@@ -47,8 +47,6 @@ const PersonalInfo = () => {
     achterkantIdentiteitsbewijs: "",
 
     provincie: "",
-    beschikbareDagen: "",
-    beschikbareTijden: "",
     geboortedatum: "",
   });
   const [voorkant, setVoorkant] = React.useState<File | null>(null);
@@ -154,8 +152,6 @@ const PersonalInfo = () => {
     formData.append("voorkantIdentiteitsbewijs", voorkant as Blob);
     formData.append("achterkantIdentiteitsbewijs", achterkant as Blob);
     formData.append("provincie", state.provincie);
-    formData.append("beschikbareDagen", state.beschikbareDagen);
-    formData.append("beschikbareTijden", state.beschikbareTijden);
     formData.append("geboortedatum", state.geboortedatum);
     setLoading(true);
     const response = await fetch("/api/create-record", {
@@ -190,8 +186,6 @@ const PersonalInfo = () => {
         voorkantIdentiteitsbewijs: "",
         achterkantIdentiteitsbewijs: "",
         provincie: "",
-        beschikbareDagen: "",
-        beschikbareTijden: "",
         geboortedatum: "",
       });
       setAndereOpleiding(false);
@@ -438,50 +432,6 @@ const PersonalInfo = () => {
               ⁠Beschikbare dagen en tijden. ⁠Op welke dagen en tijden bent u
               beschikbaar voor de opleiding?
             </Text>
-            <HStack w={"100%"} flexDirection={{ base: "column", md: "row" }}>
-              <SelectRoot
-                collection={dagen}
-                multiple
-                size="sm"
-                onValueChange={(e) =>
-                  setState({ ...state, beschikbareDagen: e.value.join(", ") })
-                }
-                required={true}
-              >
-                <SelectLabel>Dagen</SelectLabel>
-                <SelectTrigger>
-                  <SelectValueText placeholder="Kies de dag waarop u beschikbaar bent" />
-                </SelectTrigger>
-                <SelectContent>
-                  {dagen.items.map((movie) => (
-                    <SelectItem item={movie} key={movie.value}>
-                      {movie.label}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </SelectRoot>
-              <SelectRoot
-                collection={tijden}
-                multiple
-                size="sm"
-                onValueChange={(e) =>
-                  setState({ ...state, beschikbareTijden: e.value.join(", ") })
-                }
-                required={true}
-              >
-                <SelectLabel>Tijden</SelectLabel>
-                <SelectTrigger>
-                  <SelectValueText placeholder="Kies het tijdstip waarop u beschikbaar bent" />
-                </SelectTrigger>
-                <SelectContent>
-                  {tijden.items.map((movie) => (
-                    <SelectItem item={movie} key={movie.value}>
-                      {movie.label}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </SelectRoot>
-            </HStack>
           </HStack>
 
           {/* <HStack w={"100%"} flexDirection={{ base: "column", md: "row" }}>

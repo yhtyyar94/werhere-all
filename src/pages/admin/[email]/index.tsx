@@ -195,34 +195,6 @@ const ReadOnly = () => {
               />
             </Field>
           </HStack>
-
-          <HStack w={"100%"} flexDirection={{ base: "column" }}>
-            <Text
-              fontWeight={"450"}
-              fontSize={"15px"}
-              w={"100%"}
-              textAlign={"left"}
-            >
-              ⁠Beschikbare dagen en tijden. ⁠Op welke dagen en tijden bent u
-              beschikbaar voor de opleiding?
-            </Text>
-            <HStack w={"100%"} flexDirection={{ base: "column", md: "row" }}>
-              <Field label="Beschikbare Dagen">
-                <Input
-                  onChange={(e) => {}}
-                  value={state.beschikbareDagen}
-                  name="dagen"
-                />
-              </Field>
-              <Field label="Beschikbare Tijden">
-                <Input
-                  onChange={(e) => {}}
-                  value={state.beschikbareTijden}
-                  name="tijden"
-                />
-              </Field>
-            </HStack>
-          </HStack>
         </VStack>
       </form>
     </Stack>

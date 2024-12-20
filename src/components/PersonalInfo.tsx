@@ -176,6 +176,7 @@ const PersonalInfo = () => {
         description: "Uw gegevens zijn succesvol verzonden",
         type: "success",
       });
+      window.alert("Uw gegevens zijn succesvol verzonden");
       // setState({
       //   voornaam: "",
       //   achternaam: "",

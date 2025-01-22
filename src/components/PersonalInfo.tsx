@@ -115,17 +115,17 @@ const PersonalInfo = () => {
         value: "Vaktaal/Vakdidactiek Onderwijs",
       },
       {
-        label: "Vaktaal Financieel Administratief",
-        value: "Vaktaal Financieel Administratief",
+        label: "De Nieuwe Docent",
+        value: "De Nieuwe Docent",
       },
       { label: "VIT (Voorbereiding IT)", value: "VIT (Voorbereiding IT)" },
       {
-        label: "Leer-werkprogramma Data Engineer",
-        value: "Leer-werkprogramma Data Engineer",
+        label: "Leer-werktraject Financial administration/KYC",
+        value: "Leer-werktraject Financial administration/KYC",
       },
       {
-        label: "Leer-werkprogramma Data Analyst",
-        value: "Leer-werkprogramma Data Analyst",
+        label: "De Nieuwe Ingenieur",
+        value: "De Nieuwe Ingenieur",
       },
       { label: "Anders", value: "Anders" },
     ],
@@ -458,7 +458,7 @@ const PersonalInfo = () => {
                   Welke opleiding wilt u volgen?
                 </Fieldset.Legend>
                 <Fieldset.Content>
-                  <Checkbox
+                  {/* <Checkbox
                     onChange={handelCheckboxChange}
                     value="Nederlands taalcursus Intensief (B1-B2)"
                   >
@@ -478,37 +478,37 @@ const PersonalInfo = () => {
                     value="Vaktaal/Vakdidactiek Onderwijs"
                   >
                     Vaktaal/Vakdidactiek Onderwijs
-                  </Checkbox>
-                  <Checkbox
-                    onChange={handelCheckboxChange}
-                    value="Vaktaal Financieel Administratief"
-                  >
-                    Vaktaal Financieel Administratief
-                  </Checkbox>
+                  </Checkbox> */}
                   <Checkbox
                     onChange={handelCheckboxChange}
                     value="VIT (Voorbereiding IT)"
                   >
-                    VIT (Voorbereiding IT)
+                    VIT Project
                   </Checkbox>
                   <Checkbox
                     onChange={handelCheckboxChange}
-                    value="Leer-werkprogramma Data Engineer"
+                    value="Leer-werktraject Financial administration/KYC"
                   >
-                    Leer-werkprogramma Data Engineer
+                    Leer-werktraject Financial administration/KYC
                   </Checkbox>
                   <Checkbox
                     onChange={handelCheckboxChange}
-                    value="Leer-werkprogramma Data Analyst"
+                    value="De Nieuwe Ingenieur"
                   >
-                    Leer-werkprogramma Data Analyst
+                    De Nieuwe Ingenieur
                   </Checkbox>
                   <Checkbox
+                    onChange={handelCheckboxChange}
+                    value="De Nieuwe Docent"
+                  >
+                    De Nieuwe Docent
+                  </Checkbox>{" "}
+                  {/* <Checkbox
                     value="Anders"
                     onChange={() => setAndereOpleiding(!andereOpleiding)}
                   >
                     Anders
-                  </Checkbox>
+                  </Checkbox> */}
                 </Fieldset.Content>
               </CheckboxGroup>
             </Fieldset.Root>

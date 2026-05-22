@@ -12,7 +12,7 @@ export const config = {
 };
 
 export const parseForm = (
-  req: NextApiRequest
+  req: NextApiRequest,
 ): Promise<{ fields: Fields; files: Files }> => {
   return new Promise((resolve, reject) => {
     const form = formidable({});
@@ -86,6 +86,10 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         ? fields.beschikbareTijden[0]
         : null,
       geboortedatum: fields.geboortedatum ? fields.geboortedatum[0] : null,
+      burgerlijkeStaat: fields.burgerlijkeStaat
+        ? fields.burgerlijkeStaat[0]
+        : null,
+      partnerWerkt: fields.partnerWerkt ? fields.partnerWerkt[0] : null,
     });
     await record.save();
     await mongoose.disconnect();

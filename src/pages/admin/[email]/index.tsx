@@ -37,6 +37,8 @@ const ReadOnly = () => {
     beschikbareDagen: "",
     beschikbareTijden: "",
     geboortedatum: "",
+    burgerlijkeStaat: "",
+    partnerWerkt: "",
   });
   const [opleidingWiltVolgen, setOpleidingWiltVolgen] = React.useState<
     string[]
@@ -192,6 +194,22 @@ const ReadOnly = () => {
                 onChange={(e) => {}}
                 value={state.naturalisatieStatus}
                 name="naturalisatie status"
+              />
+            </Field>
+          </HStack>
+          <HStack w={"100%"} flexDirection={{ base: "column", md: "row" }}>
+            <Field label="Getrouwd / geregistreerd partnerschap">
+              <Input
+                onChange={(e) => {}}
+                value={state.burgerlijkeStaat}
+                name="burgerlijkeStaat"
+              />
+            </Field>
+            <Field label="Partner werkt">
+              <Input
+                onChange={(e) => {}}
+                value={state.partnerWerkt}
+                name="partnerWerkt"
               />
             </Field>
           </HStack>

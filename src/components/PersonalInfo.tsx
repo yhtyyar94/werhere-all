@@ -50,6 +50,8 @@ const PersonalInfo = () => {
     beschikbareDagen: "",
     beschikbareTijden: "",
     geboortedatum: "",
+    burgerlijkeStaat: "",
+    partnerWerkt: "",
   });
   const [voorkant, setVoorkant] = React.useState<File | null>(null);
   const [achterkant, setAchterkant] = React.useState<File | null>(null);
@@ -73,6 +75,13 @@ const PersonalInfo = () => {
     ],
   });
   const nationalityStatus = createListCollection({
+    items: [
+      { label: "Ja", value: "JA" },
+      { label: "Nee", value: "NEE" },
+    ],
+  });
+
+  const jaNeeColl = createListCollection({
     items: [
       { label: "Ja", value: "JA" },
       { label: "Nee", value: "NEE" },
@@ -151,7 +160,7 @@ const PersonalInfo = () => {
     formData.append("geboorteplaats", state.geboorteplaats);
     formData.append(
       "verblijfsvergunningNummer",
-      state.verblijfsvergunningNummer
+      state.verblijfsvergunningNummer,
     );
     formData.append("taalniveau", state.taalniveau);
     formData.append("uitkeringsstatus", state.uitkeringsstatus);
@@ -163,6 +172,8 @@ const PersonalInfo = () => {
     formData.append("beschikbareDagen", state.beschikbareDagen);
     formData.append("beschikbareTijden", state.beschikbareTijden);
     formData.append("geboortedatum", state.geboortedatum);
+    formData.append("burgerlijkeStaat", state.burgerlijkeStaat);
+    formData.append("partnerWerkt", state.partnerWerkt);
     setLoading(true);
     const response = await fetch("/api/create-record", {
       method: "POST",
@@ -450,6 +461,57 @@ const PersonalInfo = () => {
                 ))}
               </SelectContent>
             </SelectRoot>
+          </HStack>
+          <HStack w={"100%"} flexDirection={{ base: "column", md: "row" }}>
+            <SelectRoot
+              collection={jaNeeColl}
+              size="sm"
+              onValueChange={(e) => {
+                const val = e.value[0];
+                setState({
+                  ...state,
+                  burgerlijkeStaat: val,
+                  partnerWerkt: val === "NEE" ? "" : state.partnerWerkt,
+                });
+              }}
+              required={true}
+            >
+              <SelectLabel>
+                Bent u getrouwd of heeft u een geregistreerd partnerschap?
+              </SelectLabel>
+              <SelectTrigger>
+                <SelectValueText placeholder="Selecteer" />
+              </SelectTrigger>
+              <SelectContent>
+                {jaNeeColl.items.map((item) => (
+                  <SelectItem item={item} key={item.value}>
+                    {item.label}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </SelectRoot>
+            {state.burgerlijkeStaat === "JA" && (
+              <SelectRoot
+                collection={jaNeeColl}
+                size="sm"
+                onValueChange={(e) =>
+                  setState({ ...state, partnerWerkt: e.value[0] })
+                }
+                required={true}
+              >
+                <SelectLabel>Werkt uw partner?</SelectLabel>
+                <SelectTrigger>
+                  <SelectValueText placeholder="Selecteer" />
+                </SelectTrigger>
+                <SelectContent>
+                  {jaNeeColl.items.map((item) => (
+                    <SelectItem item={item} key={item.value}>
+                      {item.label}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </SelectRoot>
+            )}
           </HStack>
           <HStack w={"100%"} flexDirection={{ base: "column" }}>
             <Fieldset.Root>

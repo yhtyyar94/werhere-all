@@ -23,6 +23,8 @@ const recordSchema = new mongoose.Schema({
   beschikbareDagen: String,
   beschikbareTijden: String,
   geboortedatum: String,
+  burgerlijkeStaat: String,
+  partnerWerkt: String,
   createdAt: { type: Date, default: Date.now },
 });
 
